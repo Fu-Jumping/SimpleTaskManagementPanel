@@ -1,0 +1,232 @@
+<!DOCTYPE html><html lang="zh-CN" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ZenKanban - 搜索结果</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#00bfa5",
+                        "on-secondary-fixed": "#001849",
+                        "inverse-primary": "#44ddc1",
+                        "error-container": "#ffdad6",
+                        "on-primary-container": "#00473c",
+                        "border-light": "#eeeeee",
+                        "app-bg": "#f0f2f5",
+                        "outline-variant": "#bbcac4",
+                        "surface-bright": "#f4fbf7",
+                        "text-muted": "#888888",
+                        "on-tertiary": "#ffffff",
+                        "surface": "#f4fbf7",
+                        "on-tertiary-container": "#74220b",
+                        "outline": "#6c7a76",
+                        "error": "#ba1a1a",
+                        "column-bg-low": "#ecfdf5",
+                        "on-surface-variant": "#3c4a46",
+                        "inverse-on-surface": "#ebf2ef",
+                        "on-surface": "#161d1b",
+                        "tag-orange-bg": "#fff2e8",
+                        "on-secondary-fixed-variant": "#003fa3",
+                        "surface-tint": "#006b5c",
+                        "primary": "#006b5c",
+                        "on-secondary-container": "#fefcff",
+                        "background": "#f4fbf7",
+                        "secondary-container": "#306ded",
+                        "tag-blue-bg": "#e6f4ff",
+                        "surface-container-low": "#eef5f1",
+                        "primary-fixed": "#68fadd",
+                        "primary-fixed-dim": "#44ddc1",
+                        "surface-dim": "#d4dcd8",
+                        "on-primary-fixed": "#00201a",
+                        "tertiary-container": "#fe896a",
+                        "tertiary": "#9f4128",
+                        "on-error-container": "#93000a",
+                        "secondary": "#0053d0",
+                        "on-background": "#161d1b",
+                        "surface-container-highest": "#dde4e0",
+                        "on-tertiary-fixed-variant": "#7f2a13",
+                        "surface-container-high": "#e3eae6",
+                        "tertiary-fixed": "#ffdbd2",
+                        "column-bg-high": "#fef2f2",
+                        "surface-variant": "#dde4e0",
+                        "inverse-surface": "#2b3230",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed-variant": "#005145",
+                        "tertiary-fixed-dim": "#ffb4a1",
+                        "surface-container": "#e8efec",
+                        "secondary-fixed-dim": "#b3c5ff",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#dae1ff",
+                        "on-primary": "#ffffff",
+                        "column-bg-medium": "#fffbeb",
+                        "on-secondary": "#ffffff",
+                        "text-main": "#333333",
+                        "on-tertiary-fixed": "#3c0800"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "card-padding": "20px",
+                        "container-padding": "40px",
+                        "element-gap-sm": "8px",
+                        "column-gap": "40px",
+                        "element-gap-md": "16px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "label-xs": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-lg": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "fontWeight": "700" }],
+                        "label-xs": ["10px", { "lineHeight": "12px", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #f0f2f5;
+        }
+        .task-card-shadow {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-background min-h-screen flex flex-col">
+<!-- Header (Custom) -->
+<header class="bg-surface-container-lowest shadow-sm fixed top-0 left-0 w-full z-50 flex justify-between items-center px-container-padding h-16"><div class="flex-1 flex items-center"></div><div class="relative flex items-center group w-full max-w-[480px]"><span class="material-symbols-outlined absolute left-4 text-outline opacity-70 group-focus-within:text-primary-container transition-colors">search</span><input class="w-full bg-white border border-outline-variant rounded-full pl-12 pr-24 py-2 font-body-sm text-body-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary-container/20 focus:border-primary-container transition-all placeholder:text-text-muted" type="text" value="设计评审" placeholder="搜索任务..."><button class="absolute right-1 px-5 py-1.5 bg-primary-container text-white text-label-md font-bold rounded-full hover:opacity-90 transition-all shadow-sm">搜索</button></div><div class="flex-1 flex items-center justify-end gap-4"></div></header>
+<!-- Main Content -->
+<main class="flex-1 mt-16 px-container-padding py-8 flex flex-col">
+<!-- Search Context & Navigation -->
+<div class="mb-8 flex flex-col gap-4 mx-auto w-full max-w-4xl">
+<a class="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors w-fit" href="#">
+<span class="material-symbols-outlined text-xl">arrow_back</span>
+<span class="font-label-md text-label-md">返回</span>
+</a>
+<div class="flex items-baseline gap-4">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">搜索结果：'设计评审'</h1>
+<span class="font-body-sm text-body-sm text-on-surface-variant">找到 4 个相关任务</span>
+</div>
+</div>
+<!-- Search Results Grid -->
+<div class="grid grid-cols-1 gap-4 max-w-4xl mx-auto w-full">
+<!-- Result Card 1 -->
+<div class="bg-surface-container-lowest p-card-padding task-card-shadow relative group hover:border-primary-container/30 border border-transparent transition-all cursor-pointer rounded-2xl">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-tertiary-container rounded-l-2xl"></div>
+<div class="flex justify-between items-start mb-3">
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">
+                        主页改版 <span class="text-secondary-container">设计评审</span>
+</h3>
+<button class="text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4 line-clamp-2">
+                    需要对全新的主页视觉方案进行团队内部的<span class="text-secondary-container">设计评审</span>，确认组件规范和色彩搭配是否符合品牌调性。
+                </p>
+<div class="flex items-center gap-3">
+<span class="bg-tag-orange-bg text-on-tertiary-container font-label-xs text-label-xs px-2 py-1 rounded-sm uppercase">高优先级</span>
+
+<div class="flex items-center gap-1 text-on-surface-variant font-label-md text-label-md ml-auto">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span class="">2023-10-25 14:00</span>
+</div>
+</div>
+</div>
+<!-- Result Card 2 -->
+<div class="bg-surface-container-lowest p-card-padding task-card-shadow relative group hover:border-primary-container/30 border border-transparent transition-all cursor-pointer rounded-2xl">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary-fixed rounded-l-2xl"></div>
+<div class="flex justify-between items-start mb-3">
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">
+                        移动端导航 <span class="text-secondary-container">设计评审</span>
+</h3>
+<button class="text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4 line-clamp-2">
+                    针对移动端底部导航栏的交互逻辑和图标更新，安排一次快速的<span class="text-secondary-container">设计评审</span>会议，收集开发团队的反馈。
+                </p>
+<div class="flex items-center gap-3">
+<span class="bg-tag-blue-bg text-on-secondary-fixed-variant font-label-xs text-label-xs px-2 py-1 rounded-sm uppercase">中优先级</span>
+
+<div class="flex items-center gap-1 text-on-surface-variant font-label-md text-label-md ml-auto">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span class="">2023-10-30 10:00</span>
+</div>
+</div>
+</div>
+<!-- Result Card 3 -->
+<div class="bg-surface-container-lowest p-card-padding task-card-shadow relative group hover:border-primary-container/30 border border-transparent transition-all cursor-pointer rounded-2xl">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-border-light rounded-l-2xl"></div>
+<div class="flex justify-between items-start mb-3">
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">
+                        准备 <span class="text-secondary-container">设计评审</span> 材料
+                    </h3>
+<button class="text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4 line-clamp-2">
+                    整理用户调研数据和竞品分析报告，作为周五<span class="text-secondary-container">设计评审</span>的辅助背景资料。
+                </p>
+<div class="flex items-center gap-3">
+<span class="bg-surface-container-highest text-on-surface font-label-xs text-label-xs px-2 py-1 rounded-sm uppercase">低优先级</span>
+
+<div class="flex items-center gap-1 text-on-surface-variant font-label-md text-label-md ml-auto">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span class="">2023-10-26 18:00</span>
+</div>
+</div>
+</div>
+<!-- Result Card 4 -->
+<div class="bg-surface-container-lowest p-card-padding task-card-shadow relative group hover:border-primary-container/30 border border-transparent transition-all cursor-pointer opacity-70 rounded-2xl">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary-container rounded-l-2xl"></div>
+<div class="flex justify-between items-start mb-3">
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors line-through decoration-outline">
+                        注册流程 <span class="text-secondary-container">设计评审</span>
+</h3>
+<span class="material-symbols-outlined text-primary-container">check_circle</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4 line-clamp-2">
+                    新版注册表单的可用性测试结果汇报及<span class="text-secondary-container">设计评审</span>。
+                </p>
+<div class="flex items-center gap-3">
+<span class="bg-tag-blue-bg text-on-secondary-fixed-variant font-label-xs text-label-xs px-2 py-1 rounded-sm uppercase">中优先级</span>
+
+<div class="flex items-center gap-1 text-on-surface-variant font-label-md text-label-md ml-auto">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span class="">2023-10-20 15:00</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+
+
+
+
+
+
+
+</body></html>

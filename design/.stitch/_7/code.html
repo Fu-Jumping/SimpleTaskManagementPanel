@@ -1,0 +1,169 @@
+<!DOCTYPE html><html lang="zh-CN" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ZenKanban Professional - 登录</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#0053d0",
+                        "on-surface": "#161d1b",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed": "#00201a",
+                        "on-surface-variant": "#3c4a46",
+                        "primary-fixed": "#68fadd",
+                        "surface-container-highest": "#dde4e0",
+                        "primary-fixed-dim": "#44ddc1",
+                        "on-primary-fixed-variant": "#005145",
+                        "surface-dim": "#d4dcd8",
+                        "column-bg-low": "#ecfdf5",
+                        "surface-container": "#e8efec",
+                        "on-tertiary-container": "#74220b",
+                        "primary": "#006b5c",
+                        "background": "#f4fbf7",
+                        "border-light": "#eeeeee",
+                        "tag-blue-bg": "#e6f4ff",
+                        "error-container": "#ffdad6",
+                        "column-bg-high": "#fef2f2",
+                        "surface-variant": "#dde4e0",
+                        "surface-container-high": "#e3eae6",
+                        "on-background": "#161d1b",
+                        "tertiary-fixed": "#ffdbd2",
+                        "on-secondary-fixed-variant": "#003fa3",
+                        "on-secondary-fixed": "#001849",
+                        "secondary-container": "#306ded",
+                        "inverse-primary": "#44ddc1",
+                        "on-tertiary-fixed": "#3c0800",
+                        "inverse-on-surface": "#ebf2ef",
+                        "app-bg": "#f0f2f5",
+                        "inverse-surface": "#2b3230",
+                        "outline": "#6c7a76",
+                        "tertiary": "#9f4128",
+                        "on-tertiary-fixed-variant": "#7f2a13",
+                        "surface-bright": "#f4fbf7",
+                        "text-main": "#333333",
+                        "primary-container": "#00bfa5",
+                        "on-primary-container": "#00473c",
+                        "on-secondary-container": "#fefcff",
+                        "tertiary-container": "#fe896a",
+                        "outline-variant": "#bbcac4",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "tag-orange-bg": "#fff2e8",
+                        "surface-tint": "#006b5c",
+                        "on-secondary": "#ffffff",
+                        "column-bg-medium": "#fffbeb",
+                        "surface": "#f4fbf7",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "text-muted": "#888888",
+                        "surface-container-low": "#eef5f1",
+                        "secondary-fixed-dim": "#b3c5ff",
+                        "tertiary-fixed-dim": "#ffb4a1",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#dae1ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "card-padding": "20px",
+                        "element-gap-sm": "8px",
+                        "column-gap": "40px",
+                        "element-gap-md": "16px",
+                        "container-padding": "40px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-xs": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "500" }],
+                        "label-xs": ["10px", { "lineHeight": "12px", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "headline-lg": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[style*="'FILL' 1"] {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-app-bg text-on-surface min-h-screen flex items-center justify-center font-body-md antialiased p-container-padding">
+<!-- Transactional Page: No Navigation Shells -->
+<main class="w-full max-w-[440px]">
+<!-- Login Card -->
+<div class="bg-surface-container-lowest rounded-lg p-container-padding shadow-[0_4px_16px_rgba(0,0,0,0.03)] relative overflow-hidden">
+<!-- Logo & Brand -->
+<div class="flex flex-col items-center mb-8">
+<div class="w-12 h-12 bg-primary-container rounded-full flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-on-primary-container text-2xl" style="font-variation-settings: &quot;FILL&quot; 1;">view_kanban</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">用户登录</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 text-center">欢迎回来</p>
+</div>
+<!-- Login Form -->
+<form action="#" class="flex flex-col gap-element-gap-md" method="POST">
+<!-- Email/Username Input -->
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">person</span>
+<input class="w-full bg-surface text-on-surface font-body-sm text-body-sm rounded-full py-3 pl-12 pr-4 border border-outline-variant/30 focus:border-primary/50 focus:ring-4 focus:ring-primary/20 transition-all outline-none placeholder:text-on-surface-variant/50" id="username" name="username" placeholder="用户名或邮箱" required="" type="text">
+</div>
+<!-- Password Input -->
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">lock</span>
+<input class="w-full bg-surface text-on-surface font-body-sm text-body-sm rounded-full py-3 pl-12 pr-4 border border-outline-variant/30 focus:border-primary/50 focus:ring-4 focus:ring-primary/20 transition-all outline-none placeholder:text-on-surface-variant/50" id="password" name="password" placeholder="密码" required="" type="password">
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">visibility_off</span>
+</button>
+</div>
+<!-- Options -->
+<div class="flex items-center justify-between mt-2 mb-4">
+
+
+</div>
+<!-- Submit Button -->
+<button class="w-full bg-primary text-on-primary font-body-md text-body-md rounded-full py-3 hover:opacity-90 active:scale-[0.98] transition-all shadow-[0_4px_16px_rgba(0,0,0,0.03)]" type="submit">
+                    登录
+                </button>
+</form>
+<!-- Registration Link -->
+<div class="mt-8 text-center">
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                    还没有账号？ <a class="text-primary font-medium hover:text-primary-fixed-dim transition-colors" href="#">立即注册</a>
+</p>
+</div>
+<!-- Decorative minimal glow -->
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/5 rounded-full blur-2xl pointer-events-none"></div>
+<div class="absolute -bottom-10 -left-10 w-32 h-32 bg-secondary/5 rounded-full blur-2xl pointer-events-none"></div>
+</div>
+<!-- Simplified Footer for Auth Page -->
+<div class="mt-8 text-center w-full">
+
+</div>
+</main>
+
+
+</body></html>

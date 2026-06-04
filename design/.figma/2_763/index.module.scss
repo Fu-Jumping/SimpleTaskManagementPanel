@@ -1,0 +1,241 @@
+* {
+  box-sizing: border-box;
+}
+
+.mainTransactionalPag {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #f0f2f5;
+  padding: 19px 420px 51px;
+  width: 1280px;
+  height: 570px;
+
+  .loginCard {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    flex-shrink: 0;
+    align-items: flex-start;
+    align-self: stretch;
+    border-radius: 32px;
+    box-shadow: 0px 4px 16px 0px #00000008;
+    background: #ffffff;
+    padding: 40px;
+    overflow: hidden;
+    row-gap: 32px;
+
+    .logoBrand {
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      align-items: center;
+      align-self: stretch;
+
+      .margin {
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        align-items: flex-start;
+        align-self: stretch;
+        margin-right: 156px;
+        margin-left: 156px;
+        padding-bottom: 16px;
+
+        .background {
+          display: flex;
+          flex-shrink: 0;
+          align-items: center;
+          justify-content: center;
+          border-radius: 9999px;
+          background: #00bfa5;
+          width: 48px;
+          height: 48px;
+
+          .container {
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+          }
+        }
+      }
+
+      .text {
+        flex-shrink: 0;
+        line-height: 28px;
+        letter-spacing: -0.5px;
+        color: #006b5c;
+        font-family: "WenQuanYi Zen Hei", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 20px;
+        font-weight: 500;
+      }
+
+      .text2 {
+        flex-shrink: 0;
+        padding: 8px 0px 0px;
+        line-height: 24px;
+        letter-spacing: 0;
+        color: #3c4a46;
+        font-family: "WenQuanYi Zen Hei", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+      }
+    }
+
+    .loginForm {
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      align-items: center;
+      align-self: stretch;
+
+      .container3 {
+        position: absolute;
+        top: 10px;
+        left: 15px;
+        flex-shrink: 0;
+        width: 16px;
+        height: 24px;
+      }
+
+      .container2 {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        align-items: flex-start;
+        margin-right: 1px;
+        margin-left: 1px;
+        padding-bottom: 2px;
+        overflow: hidden;
+
+        .text3 {
+          flex-shrink: 0;
+          align-self: stretch;
+          letter-spacing: 0;
+          color: #3c4a4680;
+          font-family: "WenQuanYi Zen Hei", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 14px;
+          font-weight: 500;
+        }
+      }
+
+      .input {
+        display: flex;
+        position: relative;
+        align-items: flex-start;
+        justify-content: center;
+        border: 1px solid #bbcac44d;
+        border-radius: 9999px;
+        background: #f4fbf7;
+        padding: 12px 15px 11px 47px;
+        width: 360px;
+        height: 46px;
+        overflow: hidden;
+      }
+
+      .input2 {
+        display: flex;
+        position: relative;
+        align-items: flex-start;
+        justify-content: center;
+        margin-top: 16px;
+        border: 1px solid #bbcac44d;
+        border-radius: 9999px;
+        background: #f4fbf7;
+        padding: 12px 15px 11px 47px;
+        width: 360px;
+        height: 46px;
+        overflow: hidden;
+
+        .container4 {
+          position: absolute;
+          top: 14px;
+          left: 325px;
+          flex-shrink: 0;
+          z-index: 1;
+          width: 18px;
+          height: 17px;
+        }
+      }
+
+      .submitButton {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 56px;
+        border-radius: 9999px;
+        box-shadow: 0px 4px 16px 0px #00000008;
+        background: #006b5c;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        width: 360px;
+
+        .text4 {
+          flex-shrink: 0;
+          line-height: 24px;
+          letter-spacing: 0;
+          color: #ffffff;
+          font-family: "WenQuanYi Zen Hei", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 16px;
+          font-weight: 500;
+        }
+      }
+    }
+
+    .text7 {
+      flex-shrink: 0;
+      align-self: stretch;
+      text-align: center;
+      line-height: 20px;
+      letter-spacing: 0;
+      color: #000000;
+      font-family: "WenQuanYi Zen Hei", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+
+      .text5 {
+        line-height: 20px;
+        letter-spacing: 0;
+        color: #3c4a46;
+        font-family: "WenQuanYi Zen Hei", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .text6 {
+        line-height: 20px;
+        letter-spacing: 0;
+        color: #006b5c;
+        font-family: "WenQuanYi Zen Hei", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+      }
+    }
+
+    .decorativeMinimalGlo {
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      flex-shrink: 0;
+      border-radius: 9999px;
+      background: #006b5c0d;
+      width: 128px;
+      height: 128px;
+      filter: blur(20px);
+    }
+
+    .overlayBlur {
+      position: absolute;
+      bottom: -40px;
+      left: -40px;
+      flex-shrink: 0;
+      z-index: 1;
+      border-radius: 9999px;
+      background: #0053d00d;
+      width: 128px;
+      height: 128px;
+      filter: blur(20px);
+    }
+  }
+}
