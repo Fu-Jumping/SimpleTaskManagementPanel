@@ -10,6 +10,20 @@ const sampleTasks = [
   { title: '编写接口文档', description: '整理API接口文档', dueDate: null, priority: 'low', status: 'done' }
 ];
 
+function formatTask(task) {
+  return {
+    id: task.id,
+    title: task.title,
+    description: task.description,
+    dueDate: task.dueDate,
+    priority: task.priority,
+    status: task.status,
+    order: task.order,
+    createdAt: task.createdAt,
+    updatedAt: task.updatedAt
+  };
+}
+
 export async function createSampleTasks(userId) {
   if (!db.data) {
     await db.read();
@@ -36,5 +50,5 @@ export async function createSampleTasks(userId) {
   db.data.tasks.push(...newTasks);
   await saveDb();
   
-  return { created: newTasks.length, tasks: newTasks };
+  return { created: newTasks.length, tasks: newTasks.map(formatTask) };
 }

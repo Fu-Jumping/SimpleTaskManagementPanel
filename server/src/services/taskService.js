@@ -69,9 +69,13 @@ export async function createTask(userId, taskData) {
   }
   
   const now = new Date().toISOString();
-  
-  const userTasks = db.data.tasks.filter(t => t.userId === userId && t.status === taskData.status);
-  const maxOrder = userTasks.length > 0 ? Math.max(...userTasks.map(t => t.order)) : -1;
+  const status = taskData.status || 'todo';
+  const priority = taskData.priority || 'medium';
+  const userTasks = db.data.tasks.filter(t => t.userId === userId && t.status === status);
+
+  userTasks.forEach(task => {
+    task.order += 1;
+  });
   
   const task = {
     id: `task_${nanoid(8)}`,
@@ -79,9 +83,9 @@ export async function createTask(userId, taskData) {
     title: taskData.title,
     description: taskData.description || '',
     dueDate: taskData.dueDate || null,
-    priority: taskData.priority || 'medium',
-    status: taskData.status || 'todo',
-    order: maxOrder + 1,
+    priority,
+    status,
+    order: 0,
     createdAt: now,
     updatedAt: now
   };
@@ -89,7 +93,7 @@ export async function createTask(userId, taskData) {
   db.data.tasks.push(task);
   await saveDb();
   
-  return { success: true, data: formatTask(task) };
+  return { success: true, data: { task: formatTask(task) } };
 }
 
 export async function updateTask(userId, taskId, taskData) {
@@ -161,7 +165,7 @@ export async function updateTask(userId, taskId, taskData) {
   
   await saveDb();
   
-  return { success: true, data: formatTask(task) };
+  return { success: true, data: { task: formatTask(task) } };
 }
 
 export async function deleteTask(userId, taskId) {
