@@ -1,7 +1,10 @@
 import cors from 'cors';
 import express from 'express';
+import authRoutes from './routes/auth.js';
+import taskRoutes from './routes/tasks.js';
+import { initDb } from './db/index.js';
 
-export function createApp() {
+export async function createApp() {
   const app = express();
 
   app.use(cors());
@@ -16,6 +19,9 @@ export function createApp() {
     });
   });
 
+  app.use('/api/auth', authRoutes);
+  app.use('/api/tasks', taskRoutes);
+
   app.use((_request, response) => {
     response.status(404).json({
       success: false,
@@ -23,6 +29,15 @@ export function createApp() {
     });
   });
 
+  app.use((error, _request, response, _next) => {
+    console.error(error);
+    response.status(500).json({
+      success: false,
+      message: '服务器内部错误'
+    });
+  });
+
+  await initDb();
+
   return app;
 }
-
