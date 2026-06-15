@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import { db, saveDb } from '../db/index.js';
-import { validateTask } from '../utils/validators.js';
+import { isValidDate, validateTask } from '../utils/validators.js';
 
 function formatTask(task) {
   return {
@@ -80,7 +80,7 @@ export async function createTask(userId, taskData) {
   const task = {
     id: `task_${nanoid(8)}`,
     userId,
-    title: taskData.title,
+    title: taskData.title.trim(),
     description: taskData.description || '',
     dueDate: taskData.dueDate || null,
     priority,
@@ -104,31 +104,31 @@ export async function updateTask(userId, taskId, taskData) {
   const taskIndex = db.data.tasks.findIndex(t => t.id === taskId && t.userId === userId);
   
   if (taskIndex === -1) {
-    return { success: false, message: '任务不存在或无权限访问' };
+    return { success: false, status: 404, message: '任务不存在或无权限访问' };
   }
   
   const task = db.data.tasks[taskIndex];
   
   if (taskData.title !== undefined) {
-    if (!taskData.title || taskData.title.length < 1 || taskData.title.length > 50) {
+    if (typeof taskData.title !== 'string' || taskData.title.trim().length < 1 || taskData.title.trim().length > 50) {
       return { success: false, message: '标题必须是1-50个字符' };
     }
-    task.title = taskData.title;
+    task.title = taskData.title.trim();
   }
   
   if (taskData.description !== undefined) {
+    if (taskData.description !== null && typeof taskData.description !== 'string') {
+      return { success: false, message: '描述必须是字符串' };
+    }
     if (taskData.description && taskData.description.length > 500) {
       return { success: false, message: '描述不能超过500个字符' };
     }
-    task.description = taskData.description;
+    task.description = taskData.description || '';
   }
   
   if (taskData.dueDate !== undefined) {
-    if (taskData.dueDate) {
-      const date = new Date(taskData.dueDate);
-      if (!(date instanceof Date && !isNaN(date))) {
-        return { success: false, message: '截止日期格式不正确' };
-      }
+    if (taskData.dueDate && !isValidDate(taskData.dueDate)) {
+      return { success: false, message: '截止日期格式不正确' };
     }
     task.dueDate = taskData.dueDate || null;
   }
@@ -146,17 +146,21 @@ export async function updateTask(userId, taskId, taskData) {
     }
     
     const oldStatus = task.status;
+    const oldOrder = task.order;
     if (oldStatus !== taskData.status) {
       const userTasks = db.data.tasks.filter(t => t.userId === userId && t.status === taskData.status);
       const maxOrder = userTasks.length > 0 ? Math.max(...userTasks.map(t => t.order)) : -1;
-      task.order = maxOrder + 1;
       
-      const oldStatusTasks = db.data.tasks.filter(t => t.userId === userId && t.status === oldStatus);
+      const oldStatusTasks = db.data.tasks.filter(t => 
+        t.userId === userId && 
+        t.id !== taskId && 
+        t.status === oldStatus && 
+        t.order > oldOrder
+      );
       oldStatusTasks.forEach(t => {
-        if (t.order > task.order) {
-          t.order--;
-        }
+        t.order--;
       });
+      task.order = maxOrder + 1;
     }
     task.status = taskData.status;
   }
@@ -199,29 +203,43 @@ export async function reorderTasks(userId, items) {
     await db.read();
   }
   
+  for (const item of items) {
+    if (!item || typeof item.id !== 'string') {
+      return { success: false, message: '排序项缺少任务ID' };
+    }
+
+    const task = db.data.tasks.find(t => t.id === item.id && t.userId === userId);
+    if (!task) {
+      return { success: false, status: 404, message: '任务不存在或无权限访问' };
+    }
+
+    if (item.status !== undefined && !['todo', 'doing', 'done'].includes(item.status)) {
+      return { success: false, message: '状态必须是 todo、doing 或 done' };
+    }
+
+    if (item.priority !== undefined && !['high', 'medium', 'low'].includes(item.priority)) {
+      return { success: false, message: '优先级必须是 high、medium 或 low' };
+    }
+
+    if (
+      item.order !== undefined &&
+      (!Number.isInteger(item.order) || item.order < 0)
+    ) {
+      return { success: false, message: '排序值必须是非负整数' };
+    }
+  }
+
   const updatedTasks = [];
   const now = new Date().toISOString();
   
   for (const item of items) {
-    const taskIndex = db.data.tasks.findIndex(t => t.id === item.id && t.userId === userId);
-    
-    if (taskIndex === -1) {
-      continue;
-    }
-    
-    const task = db.data.tasks[taskIndex];
+    const task = db.data.tasks.find(t => t.id === item.id && t.userId === userId);
     
     if (item.status !== undefined) {
-      if (!['todo', 'doing', 'done'].includes(item.status)) {
-        continue;
-      }
       task.status = item.status;
     }
     
     if (item.priority !== undefined) {
-      if (!['high', 'medium', 'low'].includes(item.priority)) {
-        continue;
-      }
       task.priority = item.priority;
     }
     
@@ -260,7 +278,7 @@ export async function importTasks(userId, tasksData) {
     const task = {
       id: `task_${nanoid(8)}`,
       userId,
-      title: taskData.title,
+      title: taskData.title.trim(),
       description: taskData.description || '',
       dueDate: taskData.dueDate || null,
       priority: taskData.priority || 'medium',

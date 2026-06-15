@@ -30,9 +30,14 @@ export async function createSampleTasks(userId) {
   }
   
   const now = new Date().toISOString();
-  const userTasks = db.data.tasks.filter(t => t.userId === userId);
-  
-  let order = userTasks.length;
+  const nextOrderByStatus = sampleTasks.reduce((orders, task) => {
+    if (orders[task.status] === undefined) {
+      const statusTasks = db.data.tasks.filter(t => t.userId === userId && t.status === task.status);
+      orders[task.status] = statusTasks.length > 0 ? Math.max(...statusTasks.map(t => t.order)) + 1 : 0;
+    }
+
+    return orders;
+  }, {});
   
   const newTasks = sampleTasks.map(task => ({
     id: `task_${nanoid(8)}`,
@@ -42,7 +47,7 @@ export async function createSampleTasks(userId) {
     dueDate: task.dueDate,
     priority: task.priority,
     status: task.status,
-    order: order++,
+    order: nextOrderByStatus[task.status]++,
     createdAt: now,
     updatedAt: now
   }));

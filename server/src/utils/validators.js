@@ -11,18 +11,26 @@ export function isValidStatus(status) {
 
 export function isValidDate(dateStr) {
   if (!dateStr) return true;
-  const date = new Date(dateStr);
-  return date instanceof Date && !isNaN(date);
+  if (typeof dateStr !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+    return false;
+  }
+
+  const date = new Date(`${dateStr}T00:00:00.000Z`);
+  return date instanceof Date &&
+    !isNaN(date) &&
+    date.toISOString().slice(0, 10) === dateStr;
 }
 
 export function validateUser(user) {
   const errors = [];
+  const username = typeof user?.username === 'string' ? user.username.trim() : '';
+  const password = typeof user?.password === 'string' ? user.password : '';
   
-  if (!user.username || user.username.length < 3 || user.username.length > 20) {
+  if (username.length < 3 || username.length > 20) {
     errors.push('用户名必须是3-20个字符');
   }
   
-  if (!user.password || user.password.length < 6) {
+  if (password.length < 6) {
     errors.push('密码至少6个字符');
   }
   
@@ -31,24 +39,33 @@ export function validateUser(user) {
 
 export function validateTask(task) {
   const errors = [];
+  const title = typeof task?.title === 'string' ? task.title.trim() : '';
   
-  if (!task.title || task.title.length < 1 || task.title.length > 50) {
+  if (title.length < 1 || title.length > 50) {
     errors.push('标题必须是1-50个字符');
   }
   
-  if (task.description && task.description.length > 500) {
+  if (
+    task?.description !== undefined &&
+    task.description !== null &&
+    typeof task.description !== 'string'
+  ) {
+    errors.push('描述必须是字符串');
+  }
+  
+  if (typeof task?.description === 'string' && task.description.length > 500) {
     errors.push('描述不能超过500个字符');
   }
   
-  if (task.dueDate && !isValidDate(task.dueDate)) {
+  if (task?.dueDate && !isValidDate(task.dueDate)) {
     errors.push('截止日期格式不正确');
   }
   
-  if (task.priority && !isValidPriority(task.priority)) {
+  if (task?.priority && !isValidPriority(task.priority)) {
     errors.push('优先级必须是 high、medium 或 low');
   }
   
-  if (task.status && !isValidStatus(task.status)) {
+  if (task?.status && !isValidStatus(task.status)) {
     errors.push('状态必须是 todo、doing 或 done');
   }
   

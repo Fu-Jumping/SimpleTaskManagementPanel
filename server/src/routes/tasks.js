@@ -40,7 +40,7 @@ router.get('/export', authenticate, async (req, res) => {
   if (result.success) {
     sendSuccess(res, result.data);
   } else {
-    sendError(res, result.message);
+    sendError(res, result.message, result.status || 400);
   }
 });
 
@@ -62,7 +62,7 @@ router.post('/', authenticate, async (req, res) => {
   if (result.success) {
     sendSuccess(res, result.data);
   } else {
-    sendError(res, result.message);
+    sendError(res, result.message, result.status || 400);
   }
 });
 
@@ -78,7 +78,7 @@ router.post('/import', authenticate, async (req, res) => {
   if (result.success) {
     sendSuccess(res, result.data);
   } else {
-    sendError(res, result.message);
+    sendError(res, result.message, result.status || 400);
   }
 });
 
@@ -99,7 +99,7 @@ router.patch('/reorder', authenticate, async (req, res) => {
   if (result.success) {
     sendSuccess(res, result.data);
   } else {
-    sendError(res, result.message);
+    sendError(res, result.message, result.status || 400);
   }
 });
 
@@ -129,7 +129,7 @@ router.patch('/:id', authenticate, async (req, res) => {
   if (result.success) {
     sendSuccess(res, result.data);
   } else {
-    sendError(res, result.message);
+    sendError(res, result.message, result.status || 400);
   }
 });
 
