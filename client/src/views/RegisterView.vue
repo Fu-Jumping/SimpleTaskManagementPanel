@@ -40,7 +40,19 @@ async function handleRegister() {
 <template>
   <main class="auth-page">
     <section class="auth-card">
-      <div class="auth-logo">凹</div>
+      <div class="auth-logo" aria-label="任务看板">
+        <span class="logo-column">
+          <i />
+          <i />
+        </span>
+        <span class="logo-column">
+          <i />
+        </span>
+        <span class="logo-column">
+          <i />
+          <i />
+        </span>
+      </div>
       <h1 class="auth-title">创建新账号</h1>
 
       <a-form layout="vertical" @submit.prevent="handleRegister">
@@ -95,22 +107,40 @@ async function handleRegister() {
 }
 .auth-card {
   width: min(420px, 100%);
+  min-height: 480px;
   padding: 40px 32px;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 18px 50px rgba(31, 41, 51, 0.08);
   text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 .auth-logo {
   width: 56px;
   height: 56px;
   margin: 0 auto 16px;
   display: grid;
-  place-items: center;
-  border-radius: 9999px;
-  background: #00bfa5;
-  color: #fff;
-  font-size: 22px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding: 10px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #00bfa5, #00897b);
+  box-shadow: 0 10px 24px rgba(0, 137, 123, 0.22);
+}
+.logo-column {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.logo-column i {
+  display: block;
+  height: 10px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.92);
+}
+.logo-column:nth-child(2) i {
+  height: 24px;
 }
 .auth-title {
   margin: 0 0 24px;
@@ -118,7 +148,8 @@ async function handleRegister() {
   color: #1f2937;
 }
 .auth-foot {
-  margin-top: 20px;
+  margin-top: auto;
+  padding-top: 20px;
   color: #6b7280;
 }
 </style>

@@ -267,33 +267,37 @@ onBeforeUnmount(() => {
               </span>
             </div>
 
-            <!-- vuedraggable：group 相同的列之间可互相拖拽 -->
-            <draggable
-              v-model="localColumns[col.key]"
-              :group="boardMode"
-              item-key="id"
-              class="column-body"
-              ghost-class="drag-ghost"
-              @end="onDragEnd"
-            >
-              <template #item="{ element }">
-                <div>
-                  <TaskCard
-                    :task="element"
-                    :keyword="tasksStore.filters.keyword"
-                    :selected="tasksStore.selectedTaskId === element.id"
-                    @select="selectTask"
-                    @edit="openEdit"
-                    @delete="confirmDelete"
-                    @toggle-done="toggleDone"
-                  />
-                </div>
-              </template>
-            </draggable>
+            <div class="column-content">
+              <!-- vuedraggable：group 相同的列之间可互相拖拽 -->
+              <draggable
+                v-model="localColumns[col.key]"
+                :group="boardMode"
+                item-key="id"
+                class="column-body"
+                ghost-class="drag-ghost"
+                @end="onDragEnd"
+              >
+                <template #item="{ element }">
+                  <div>
+                    <TaskCard
+                      :task="element"
+                      :keyword="tasksStore.filters.keyword"
+                      :selected="tasksStore.selectedTaskId === element.id"
+                      @select="selectTask"
+                      @edit="openEdit"
+                      @delete="confirmDelete"
+                      @toggle-done="toggleDone"
+                    />
+                  </div>
+                </template>
+              </draggable>
 
-            <p v-if="(localColumns[col.key] || []).length === 0" class="empty">
-              暂无任务
-            </p>
+              <a-empty
+                v-if="(localColumns[col.key] || []).length === 0"
+                class="empty"
+                description="暂无任务"
+              />
+            </div>
           </section>
         </div>
       </a-spin>
@@ -453,8 +457,15 @@ onBeforeUnmount(() => {
   display: inline-grid;
   place-items: center;
 }
-.column-body {
+.column-content {
+  position: relative;
   flex: 1;
+  min-height: 0;
+}
+.column-body {
+  position: relative;
+  z-index: 1;
+  height: 100%;
   min-height: 0;
   overflow-y: auto;
   padding-right: 4px;
@@ -463,10 +474,15 @@ onBeforeUnmount(() => {
   opacity: 0.4;
 }
 .empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.empty :deep(.ant-empty-description) {
   color: #9ca3af;
   font-size: 13px;
-  text-align: center;
-  padding: 16px 0;
 }
 @media (max-width: 768px) {
   .columns {
