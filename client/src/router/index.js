@@ -33,11 +33,11 @@ const router = createRouter({
 });
 
 // 全局登录守卫
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
   const auth = useAuthStore();
   // 刷新后 store 是空的，先尝试从 localStorage 恢复登录态
   if (!auth.isLoggedIn) {
-    auth.restoreSession();
+    await auth.restoreSession();
   }
 
   // 需要登录但未登录 -> 去登录页

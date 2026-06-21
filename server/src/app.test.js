@@ -229,13 +229,15 @@ describe('backend contract api', () => {
         tasks: [
           { title: validTitle, priority: 'medium', status: 'todo', dueDate: '2026-06-15' },
           { title: '', priority: 'medium', status: 'todo' },
+          { title: 'Missing priority imported task', status: 'todo' },
+          { title: 'Missing status imported task', priority: 'medium' },
           { title: 'Invalid imported task', priority: 'blocked', status: 'todo' }
         ]
       })
       .expect(200);
 
     expect(response.body.data.imported).toBe(1);
-    expect(response.body.data.skipped).toBe(2);
+    expect(response.body.data.skipped).toBe(4);
     expect(response.body.data.tasks).toHaveLength(1);
     expect(response.body.data.tasks[0]).toEqual(
       expect.objectContaining({

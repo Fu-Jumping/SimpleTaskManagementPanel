@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import { db, saveDb } from '../db/index.js';
-import { isValidDate, validateTask } from '../utils/validators.js';
+import { isValidDate, validateImportedTask, validateTask } from '../utils/validators.js';
 
 function formatTask(task) {
   return {
@@ -266,7 +266,7 @@ export async function importTasks(userId, tasksData) {
   let skipped = 0;
   
   for (const taskData of tasksData) {
-    const errors = validateTask(taskData);
+    const errors = validateImportedTask(taskData);
     if (errors.length > 0) {
       skipped++;
       continue;

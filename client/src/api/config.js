@@ -1,7 +1,5 @@
-// API 配置：一键切换 Mock / 真实后端
-// useMock = true   → 使用本地 Mock 数据（前端独立开发）
-// useMock = false  → 请求真实后端（需要后端已启动）
+// API 配置：默认请求真实后端；测试环境和显式 VITE_USE_MOCK=true 时使用 Mock。
 export const API_CONFIG = {
-  useMock: true,
-  baseURL: 'http://localhost:3000/api'
+  useMock: import.meta.env.MODE === 'test' || import.meta.env.VITE_USE_MOCK === 'true',
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
 };

@@ -71,3 +71,17 @@ export function validateTask(task) {
   
   return errors;
 }
+
+export function validateImportedTask(task) {
+  const errors = validateTask(task);
+
+  if (!task?.priority) {
+    errors.push('优先级不能为空');
+  }
+
+  if (!task?.status) {
+    errors.push('状态不能为空');
+  }
+
+  return errors;
+}

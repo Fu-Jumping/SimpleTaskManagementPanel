@@ -1,9 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { login as apiLogin, register as apiRegister, getMe } from '../api/auth';
-
-const TOKEN_KEY = 'tb_token';
-const USER_KEY = 'tb_user';
+import { clearSession, getStoredToken, getStoredUser, saveSession } from '../utils/session';
 
 // auth store：管理登录状态、token、当前用户
 // 第一阶段使用 Mock 数据，后期把 mockLogin / mockRegister 换成真实接口即可
@@ -19,8 +17,7 @@ export const useAuthStore = defineStore('auth', () => {
   function setSession(nextToken, nextUser) {
     token.value = nextToken;
     user.value = nextUser;
-    localStorage.setItem(TOKEN_KEY, nextToken);
-    localStorage.setItem(USER_KEY, JSON.stringify(nextUser));
+    saveSession(nextToken, nextUser);
   }
 
   // 登录：成功后保存 token 和用户信息
@@ -41,21 +38,29 @@ export const useAuthStore = defineStore('auth', () => {
   function logout() {
     token.value = '';
     user.value = null;
-    localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(USER_KEY);
+    clearSession();
   }
 
-  // 刷新页面后从 localStorage 恢复登录态
-  function restoreSession() {
-    const savedToken = localStorage.getItem(TOKEN_KEY);
-    const savedUser = localStorage.getItem(USER_KEY);
-    if (savedToken && savedUser) {
-      token.value = savedToken;
-      try {
-        user.value = JSON.parse(savedUser);
-      } catch {
-        user.value = null;
-      }
+  // 刷新页面后从 localStorage 恢复登录态，并通过后端校验 token
+  async function restoreSession() {
+    const savedToken = getStoredToken();
+    const savedUser = getStoredUser();
+
+    if (!savedToken || !savedUser) {
+      logout();
+      return false;
+    }
+
+    token.value = savedToken;
+    user.value = savedUser;
+
+    try {
+      const { user: currentUser } = await getMe();
+      setSession(savedToken, currentUser);
+      return true;
+    } catch {
+      logout();
+      return false;
     }
   }
 

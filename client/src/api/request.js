@@ -1,14 +1,7 @@
 // 统一请求模块：自动加 token、统一解包 { success, data }、抛出错误 message
 // 所有接口请求都通过此模块发送，不直接使用 fetch。
 import { API_CONFIG } from './config';
-
-function getToken() {
-  try {
-    return localStorage.getItem('tb_token');
-  } catch {
-    return null;
-  }
-}
+import { clearSession, getStoredToken, notifyUnauthorized } from '../utils/session';
 
 // 把对象转成 URL 查询字符串，跳过空值
 function toQueryString(params) {
@@ -23,7 +16,7 @@ function toQueryString(params) {
 
 async function request(method, path, options = {}) {
   const headers = { 'Content-Type': 'application/json' };
-  const token = getToken();
+  const token = getStoredToken();
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
   }
@@ -53,6 +46,10 @@ async function request(method, path, options = {}) {
   }
 
   if (!json.success) {
+    if (res.status === 401) {
+      clearSession();
+      notifyUnauthorized();
+    }
     throw new Error(json.message || `请求失败 (${res.status})`);
   }
 

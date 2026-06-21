@@ -157,6 +157,15 @@ async function onFilterReset() {
 // ===== 数据中心 =====
 const dataCenterOpen = ref(false);
 
+async function handleGenerateSample() {
+  try {
+    const { created } = await tasksStore.generateSample();
+    message.success(`已生成 ${created} 条示例任务`);
+  } catch (err) {
+    message.error(err.message || '生成示例数据失败');
+  }
+}
+
 // ===== 退出登录 =====
 function handleLogout() {
   auth.logout();
@@ -217,6 +226,9 @@ onBeforeUnmount(() => {
             <a-menu>
               <a-menu-item key="data" @click="dataCenterOpen = true">
                 数据设置
+              </a-menu-item>
+              <a-menu-item key="sample" @click="handleGenerateSample">
+                生成示例数据
               </a-menu-item>
               <a-menu-item key="logout" @click="handleLogout">
                 退出登录
