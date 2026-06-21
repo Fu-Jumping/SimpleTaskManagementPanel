@@ -62,6 +62,28 @@ let mockTasks = [
     order: 0,
     createdAt: '2026-06-04T10:15:00.000Z',
     updatedAt: '2026-06-04T10:15:00.000Z'
+  },
+  {
+    id: 'task_005',
+    title: '数据导出流程确认',
+    description: '确认导出筛选、勾选和排序流程是否满足演示要求。',
+    dueDate: '2026-11-08',
+    priority: 'medium',
+    status: 'done',
+    order: 1,
+    createdAt: '2026-06-04T10:20:00.000Z',
+    updatedAt: '2026-06-04T10:20:00.000Z'
+  },
+  {
+    id: 'task_006',
+    title: '移动端布局检查',
+    description: '检查小屏幕下顶部操作区和看板列是否可用。',
+    dueDate: '2026-11-10',
+    priority: 'low',
+    status: 'doing',
+    order: 1,
+    createdAt: '2026-06-04T10:25:00.000Z',
+    updatedAt: '2026-06-04T10:25:00.000Z'
   }
 ];
 
@@ -126,6 +148,13 @@ export async function mockDeleteTask(id) {
   return { id };
 }
 
+export async function mockClearTasks() {
+  await delay();
+  const deleted = mockTasks.length;
+  mockTasks = [];
+  return { deleted };
+}
+
 export async function mockReorderTasks(items = []) {
   await delay();
   items.forEach((item) => {
@@ -181,7 +210,8 @@ const SAMPLE_TASKS = [
   { title: '实现用户认证模块', description: '登录、注册、JWT 签发与验证', priority: 'high', status: 'doing' },
   { title: '编写单元测试', description: '为核心逻辑补充单元测试覆盖', priority: 'medium', status: 'todo' },
   { title: '数据库表结构设计', description: '设计 users 和 tasks 表的字段与索引', priority: 'medium', status: 'done' },
-  { title: '优化首屏加载速度', description: '代码分割与懒加载策略调整', priority: 'low', status: 'todo' },
+  { title: '优化首屏加载速度', description: '代码分割与懒加载策略调整', priority: 'low', status: 'doing' },
+  { title: '整理演示操作清单', description: '记录注册、任务管理和数据导入导出的演示步骤', priority: 'low', status: 'done' },
 ];
 
 export async function mockGenerateSample() {
@@ -225,6 +255,11 @@ export async function updateTask(id, payload) {
 export async function deleteTask(id) {
   if (API_CONFIG.useMock) return mockDeleteTask(id);
   return api.delete(`/tasks/${id}`);
+}
+
+export async function clearTasks() {
+  if (API_CONFIG.useMock) return mockClearTasks();
+  return api.delete('/tasks');
 }
 
 export async function reorderTasks(items) {

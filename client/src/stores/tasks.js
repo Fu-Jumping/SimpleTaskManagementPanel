@@ -5,6 +5,7 @@ import {
   createTask as apiCreateTask,
   updateTask as apiUpdateTask,
   deleteTask as apiDeleteTask,
+  clearTasks as apiClearTasks,
   reorderTasks as apiReorderTasks,
   importTasks as apiImportTasks,
   exportTasks as apiExportTasks,
@@ -86,6 +87,13 @@ export const useTasksStore = defineStore('tasks', () => {
     await fetchTasks();
   }
 
+  async function clearTasks() {
+    const result = await apiClearTasks();
+    selectedTaskId.value = null;
+    await fetchTasks();
+    return result; // { deleted }
+  }
+
   // 拖拽排序：items 为 [{ id, status, priority, order }]
   // 失败时重新拉取列表恢复后端状态（由调用方捕获错误并提示）
   async function reorderTasks(items) {
@@ -104,9 +112,9 @@ export const useTasksStore = defineStore('tasks', () => {
     return result; // { imported, skipped, tasks }
   }
 
-  // 导出当前筛选任务
-  async function exportTasks() {
-    return apiExportTasks(filters.value);
+  // 导出任务；未传参时沿用当前看板筛选，导出弹窗可传入临时筛选
+  async function exportTasks(exportFilters = filters.value) {
+    return apiExportTasks(exportFilters);
   }
 
   // 生成示例数据（追加，不覆盖已有任务）
@@ -138,6 +146,7 @@ export const useTasksStore = defineStore('tasks', () => {
     createTask,
     updateTask,
     deleteTask,
+    clearTasks,
     reorderTasks,
     importTasks,
     exportTasks,

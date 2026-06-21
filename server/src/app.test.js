@@ -131,6 +131,33 @@ describe('backend contract api', () => {
     expect(response.body.data.tasks[0]).not.toHaveProperty('userId');
   });
 
+  it('creates sample tasks with mixed status and priority combinations', async () => {
+    const app = await createApp();
+    const { token } = await registerUser(app);
+
+    const response = await request(app)
+      .post('/api/tasks/sample')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+
+    const tasks = response.body.data.tasks;
+    const prioritiesByStatus = tasks.reduce((map, task) => {
+      if (!map[task.status]) map[task.status] = new Set();
+      map[task.status].add(task.priority);
+      return map;
+    }, {});
+    const statusesByPriority = tasks.reduce((map, task) => {
+      if (!map[task.priority]) map[task.priority] = new Set();
+      map[task.priority].add(task.status);
+      return map;
+    }, {});
+
+    expect(prioritiesByStatus.todo.size).toBeGreaterThan(1);
+    expect(prioritiesByStatus.doing.size).toBeGreaterThan(1);
+    expect(statusesByPriority.high.size).toBeGreaterThan(1);
+    expect(statusesByPriority.low.size).toBeGreaterThan(1);
+  });
+
   it('rejects task access without a token', async () => {
     const app = await createApp();
 
@@ -287,5 +314,47 @@ describe('backend contract api', () => {
         status: 'todo'
       })
     );
+  });
+
+  it('clears only the current user tasks', async () => {
+    const app = await createApp();
+    const userA = await registerUser(app);
+    const userB = await registerUser(app);
+
+    await request(app)
+      .post('/api/tasks')
+      .set('Authorization', `Bearer ${userA.token}`)
+      .send({ title: 'User A clear target', priority: 'high', status: 'todo' })
+      .expect(200);
+
+    const userBTaskResponse = await request(app)
+      .post('/api/tasks')
+      .set('Authorization', `Bearer ${userB.token}`)
+      .send({ title: 'User B should remain', priority: 'low', status: 'doing' })
+      .expect(200);
+
+    const userABeforeClearResponse = await request(app)
+      .get('/api/tasks')
+      .set('Authorization', `Bearer ${userA.token}`)
+      .expect(200);
+
+    const clearResponse = await request(app)
+      .delete('/api/tasks')
+      .set('Authorization', `Bearer ${userA.token}`)
+      .expect(200);
+
+    expect(clearResponse.body.data.deleted).toBe(userABeforeClearResponse.body.data.count);
+
+    const userAListResponse = await request(app)
+      .get('/api/tasks')
+      .set('Authorization', `Bearer ${userA.token}`)
+      .expect(200);
+    expect(userAListResponse.body.data.tasks).toHaveLength(0);
+
+    const userBCheckResponse = await request(app)
+      .get(`/api/tasks/${userBTaskResponse.body.data.task.id}`)
+      .set('Authorization', `Bearer ${userB.token}`)
+      .expect(200);
+    expect(userBCheckResponse.body.data.task.title).toBe('User B should remain');
   });
 });

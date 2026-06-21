@@ -6,6 +6,7 @@ import {
   createTask, 
   updateTask, 
   deleteTask, 
+  clearTasks,
   reorderTasks,
   importTasks,
   exportTasks 
@@ -131,6 +132,11 @@ router.patch('/:id', authenticate, async (req, res) => {
   } else {
     sendError(res, result.message, result.status || 400);
   }
+});
+
+router.delete('/', authenticate, async (req, res) => {
+  const result = await clearTasks(req.user.id);
+  sendSuccess(res, result.data);
 });
 
 router.delete('/:id', authenticate, async (req, res) => {

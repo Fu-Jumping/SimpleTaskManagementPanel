@@ -40,4 +40,28 @@ describe('tasks store（基于 Mock 数据）', () => {
     expect(result.imported).toBe(1);
     expect(result.skipped).toBe(2);
   });
+
+  it('导出可以使用临时筛选且不污染看板筛选', async () => {
+    const store = useTasksStore();
+    await store.setFilters({ status: 'todo' });
+
+    const data = await store.exportTasks({ priority: 'low' });
+
+    expect(data.tasks.length).toBeGreaterThan(0);
+    expect(data.tasks.every((task) => task.priority === 'low')).toBe(true);
+    expect(store.filters.status).toBe('todo');
+    expect(store.filters.priority).toBe('');
+  });
+
+  it('可以清空全部 Mock 任务并清除选中状态', async () => {
+    const store = useTasksStore();
+    await store.fetchTasks();
+    store.selectTask(store.tasks[0].id);
+
+    const result = await store.clearTasks();
+
+    expect(result.deleted).toBeGreaterThan(0);
+    expect(store.tasks).toHaveLength(0);
+    expect(store.selectedTaskId).toBe(null);
+  });
 });

@@ -198,6 +198,20 @@ export async function deleteTask(userId, taskId) {
   return { success: true, data: { id: taskId } };
 }
 
+export async function clearTasks(userId) {
+  if (!db.data) {
+    await db.read();
+  }
+
+  const beforeCount = db.data.tasks.length;
+  db.data.tasks = db.data.tasks.filter(t => t.userId !== userId);
+  const deleted = beforeCount - db.data.tasks.length;
+
+  await saveDb();
+
+  return { success: true, data: { deleted } };
+}
+
 export async function reorderTasks(userId, items) {
   if (!db.data) {
     await db.read();

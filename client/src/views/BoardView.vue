@@ -197,21 +197,33 @@ onBeforeUnmount(() => {
   <div class="board-wrap">
     <!-- 顶部栏 -->
     <header class="board-header">
-      <div class="brand">任务管理</div>
+      <div class="header-left">
+        <div class="brand">任务管理</div>
 
-      <div class="mode-switch">
-        <button
-          :class="['mode-btn', { active: boardMode === 'status' }]"
-          @click="boardMode = 'status'"
-        >
-          状态
-        </button>
-        <button
-          :class="['mode-btn', { active: boardMode === 'priority' }]"
-          @click="boardMode = 'priority'"
-        >
-          优先级
-        </button>
+        <div :class="['mode-switch', `mode-${boardMode}`]">
+          <span class="mode-indicator" />
+          <button
+            :class="['mode-btn', { active: boardMode === 'status' }]"
+            @click="boardMode = 'status'"
+          >
+            状态
+          </button>
+          <button
+            :class="['mode-btn', { active: boardMode === 'priority' }]"
+            @click="boardMode = 'priority'"
+          >
+            优先级
+          </button>
+        </div>
+      </div>
+
+      <div class="header-search">
+        <TaskFilters
+          :filters="tasksStore.filters"
+          @search="onSearch"
+          @change="onFilterChange"
+          @reset="onFilterReset"
+        />
       </div>
 
       <div class="header-right">
@@ -239,14 +251,7 @@ onBeforeUnmount(() => {
       </div>
     </header>
 
-    <!-- 筛选区 -->
-    <div class="board-toolbar">
-      <TaskFilters
-        :filters="tasksStore.filters"
-        @search="onSearch"
-        @change="onFilterChange"
-        @reset="onFilterReset"
-      />
+    <div class="board-summary">
       <p class="result-count">共 {{ totalCount }} 个任务</p>
     </div>
 
@@ -309,29 +314,62 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .board-wrap {
-  min-height: 100vh;
+  height: 100vh;
   background: #f0f2f5;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 .board-header {
-  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: minmax(250px, 1fr) minmax(360px, 560px) minmax(250px, 1fr);
   align-items: center;
-  gap: 24px;
+  gap: 18px;
   padding: 16px 24px;
   background: #fff;
   border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-width: 0;
 }
 .brand {
   font-size: 20px;
   font-weight: 700;
   color: #1f2937;
+  white-space: nowrap;
 }
 .mode-switch {
+  position: relative;
   display: inline-flex;
   background: #f3f4f6;
   border-radius: 9999px;
   padding: 4px;
+  flex-shrink: 0;
+}
+.mode-indicator {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 8px) / 2);
+  border-radius: 9999px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: transform 0.22s ease;
+}
+.mode-priority .mode-indicator {
+  transform: translateX(100%);
 }
 .mode-btn {
+  position: relative;
+  z-index: 1;
   border: none;
   background: transparent;
   padding: 6px 18px;
@@ -340,23 +378,26 @@ onBeforeUnmount(() => {
   color: #6b7280;
 }
 .mode-btn.active {
-  background: #fff;
   color: #00897b;
   font-weight: 600;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.header-search {
+  display: flex;
+  justify-content: center;
+  min-width: 0;
 }
 .header-right {
-  margin-left: auto;
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 12px;
+  min-width: 0;
 }
-.board-toolbar {
+.board-summary {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 16px 24px 0;
-  flex-wrap: wrap;
+  justify-content: flex-end;
+  padding: 12px 24px 0;
 }
 .result-count {
   margin: 0;
@@ -365,18 +406,31 @@ onBeforeUnmount(() => {
   white-space: nowrap;
 }
 .board-body {
+  flex: 1;
+  min-height: 0;
   padding: 16px 24px 24px;
+  overflow: hidden;
+}
+.board-body :deep(.ant-spin-nested-loading),
+.board-body :deep(.ant-spin-container) {
+  height: 100%;
+  min-height: 0;
 }
 .columns {
+  height: 100%;
+  min-height: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
-  align-items: start;
+  align-items: stretch;
 }
 .column {
   background: #f8fafc;
   border-radius: 16px;
   padding: 16px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 .column-head {
   display: flex;
@@ -400,7 +454,10 @@ onBeforeUnmount(() => {
   place-items: center;
 }
 .column-body {
-  min-height: 60px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
 }
 .drag-ghost {
   opacity: 0.4;
@@ -414,10 +471,39 @@ onBeforeUnmount(() => {
 @media (max-width: 768px) {
   .columns {
     grid-template-columns: 1fr;
+    height: auto;
+  }
+  .board-wrap {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+  .board-body {
+    overflow: visible;
+  }
+  .column {
+    max-height: none;
+  }
+  .column-body {
+    max-height: none;
+    overflow: visible;
   }
   .board-header {
-    flex-wrap: wrap;
+    grid-template-columns: 1fr;
     gap: 12px;
+  }
+  .header-left {
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .brand {
+    width: auto;
+  }
+  .header-search {
+    width: 100%;
+  }
+  .header-right {
+    justify-content: flex-end;
   }
 }
 </style>

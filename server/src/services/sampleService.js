@@ -3,11 +3,11 @@ import { db, saveDb } from '../db/index.js';
 
 const sampleTasks = [
   { title: '完成项目需求分析', description: '分析用户需求，整理功能清单', dueDate: null, priority: 'high', status: 'todo' },
-  { title: '设计数据库结构', description: '设计用户表和任务表结构', dueDate: null, priority: 'high', status: 'todo' },
-  { title: '实现用户认证', description: '完成注册、登录、JWT认证功能', dueDate: null, priority: 'medium', status: 'doing' },
-  { title: '任务CRUD接口', description: '实现任务的增删改查接口', dueDate: null, priority: 'medium', status: 'doing' },
-  { title: '前端页面开发', description: '开发登录页和看板页', dueDate: null, priority: 'low', status: 'done' },
-  { title: '编写接口文档', description: '整理API接口文档', dueDate: null, priority: 'low', status: 'done' }
+  { title: '整理用户手册初稿', description: '补充核心功能操作说明', dueDate: null, priority: 'medium', status: 'todo' },
+  { title: '实现用户认证', description: '完成注册、登录、JWT认证功能', dueDate: null, priority: 'high', status: 'doing' },
+  { title: '优化任务筛选体验', description: '调整搜索和筛选入口的位置', dueDate: null, priority: 'low', status: 'doing' },
+  { title: '编写接口文档', description: '整理API接口文档', dueDate: null, priority: 'medium', status: 'done' },
+  { title: '前端页面开发', description: '开发登录页和看板页', dueDate: null, priority: 'low', status: 'done' }
 ];
 
 function formatTask(task) {
