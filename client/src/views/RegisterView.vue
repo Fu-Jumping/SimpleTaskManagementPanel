@@ -40,19 +40,6 @@ async function handleRegister() {
 <template>
   <main class="auth-page">
     <section class="auth-card">
-      <div class="auth-logo" aria-label="任务看板">
-        <span class="logo-column">
-          <i />
-          <i />
-        </span>
-        <span class="logo-column">
-          <i />
-        </span>
-        <span class="logo-column">
-          <i />
-          <i />
-        </span>
-      </div>
       <h1 class="auth-title">创建新账号</h1>
 
       <a-form layout="vertical" @submit.prevent="handleRegister">
@@ -116,34 +103,8 @@ async function handleRegister() {
   display: flex;
   flex-direction: column;
 }
-.auth-logo {
-  width: 56px;
-  height: 56px;
-  margin: 0 auto 16px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 4px;
-  padding: 10px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, #00bfa5, #00897b);
-  box-shadow: 0 10px 24px rgba(0, 137, 123, 0.22);
-}
-.logo-column {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.logo-column i {
-  display: block;
-  height: 10px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.92);
-}
-.logo-column:nth-child(2) i {
-  height: 24px;
-}
 .auth-title {
-  margin: 0 0 24px;
+  margin: 8px 0 24px;
   font-size: 24px;
   color: #1f2937;
 }
